@@ -59,6 +59,10 @@ y = repmat(y,1,1,steptime);
                u(i,stepx+2,t) = sin(2*pi-i*dy-t*dt);
             end
         end
+if exist( 'checkpoint.mat','file' ) % If a checkpoint file exists, load it
+    fprintf('Checkpoint file found - Loading\n');
+    load('checkpoint.mat')
+end          
 %% Explicit Calc
         for t = 1:1:steptime+1
             for i = 2:1:stepy+2
@@ -82,6 +86,11 @@ y = repmat(y,1,1,steptime);
 %             zlabel('Numerical Solution to the Manufactured Solution  \rightarrow')
 %             drawnow; 
 %             refreshdata(h)
+    if mod(t,t/4)==0
+        %save checkpoint   
+        fprintf('Saving checkpoint\n');
+        save('checkpoint.mat');
+    end
         end
     
         %Used to find error
