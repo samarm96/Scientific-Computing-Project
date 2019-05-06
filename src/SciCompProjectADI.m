@@ -60,6 +60,11 @@ dt = dx^2/4;
                unh(i,stepx+3,t) = gabx + (i-ay)/(by-ay) * (fabx - gabx);
             end
         end
+        
+if exist( 'checkpoint.mat','file' ) % If a checkpoint file exists, load it
+    fprintf('Checkpoint file found - Loading\n');
+    load('checkpoint.mat')
+end        
 %% ADI Implicit Calcs
 
         %Preallocate variables needed for thomas algorithm that don't need
@@ -128,6 +133,10 @@ dt = dx^2/4;
                 end                  
             end
             
-
+    if mod(t,t/4)==0
+        %save checkpoint   
+        fprintf('Saving checkpoint\n');
+        save('checkpoint.mat');
+    end
         end
 

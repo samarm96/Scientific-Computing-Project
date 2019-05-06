@@ -2,6 +2,7 @@
 
 clear
 
+
 % Boundaries of Problem
 bx = 2*pi; 
 by = 2*pi; 
@@ -52,6 +53,11 @@ y = repmat(y,1,1,steptime+3);
                u(i,stepx+3,t) = gabx + (i-ay)/(by-ay) * (fabx - gabx);
             end
         end
+        
+if exist( 'checkpoint.mat','file' ) % If a checkpoint file exists, load it
+    fprintf('Checkpoint file found - Loading\n');
+    load('checkpoint.mat')
+end        
 %% Explicit Calc
 
         for t = 1:1:steptime+3
@@ -75,6 +81,11 @@ y = repmat(y,1,1,steptime+3);
 %             zlabel('Solution ')
 %             drawnow; 
 %             refreshdata(h)
+    if mod(t,t/4)==0
+        %save checkpoint   
+        fprintf('Saving checkpoint\n');
+        save('checkpoint.mat');
+    end
         end
 
         
